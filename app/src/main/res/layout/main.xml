@@ -1,0 +1,123 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ff444444"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="0.01pt"
+        android:layout_weight="2.7"
+        android:background="#ff444444" >
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+        <io.pacmonitorandroid.app.main.GraphView
+            android:id="@+id/graph"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/textViewPRR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|top"
+                    android:text="Packet reception rate" />
+
+    </FrameLayout>
+     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="0.01pt"
+        android:layout_weight=".5"
+        android:background="#ff444444" >
+
+        <TextView
+            android:id="@+id/LabelSensor1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="0.1pt"
+            android:layout_weight="1"
+            android:background="#ff000000"
+            android:gravity="center"
+            android:text="@string/label_sensor1"
+            android:textColor="#ff64ff64"
+            android:textSize="20sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/LabelSensor2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="#ff000000"
+            android:gravity="center"
+            android:text="@string/label_sensor2"
+            android:textColor="#ffffff64"
+            android:textSize="20sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/LabelSensor3"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="0.1pt"
+            android:layout_weight="1"
+            android:background="#ff000000"
+            android:gravity="center"
+            android:text="@string/label_sensor3"
+            android:textColor="#ffff6464"
+            android:textSize="20sp" >
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ff444444" >
+
+        <TextView
+            android:id="@+id/sensorvalue1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="0.1pt"
+            android:layout_weight="6"
+            android:background="#ff000000"
+            android:gravity="center"
+            android:text="@string/sensorvalue1"
+            android:textSize="20sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/sensorvalue2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="6"
+            android:background="#ff000000"
+            android:gravity="center"
+            android:text="@string/sensorvalue2"
+            android:textSize="20sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/sensorvalue3"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="0.1pt"
+            android:layout_weight="6"
+            android:background="#ff000000"
+            android:gravity="center"
+            android:text="@string/sensorvalue3"
+            android:textSize="20sp" >
+        </TextView>
+    </LinearLayout>
+
+    
+
+</LinearLayout>
