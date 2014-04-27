@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.UUID;
 
 import io.pacmonitorandroid.app.driver.driver.FormatCluster;
 import io.pacmonitorandroid.app.driver.driver.ObjectCluster;
@@ -28,6 +29,7 @@ public class Logging {
     boolean mFirstWrite=true;
     String[] mSensorNames;
     String[] mSensorFormats;
+    String patientId = UUID.randomUUID().toString();
     String[] mSensorUnits;
     String mFileName="";
     BufferedWriter writer=null;
@@ -181,11 +183,14 @@ public class Logging {
                 }
                 data.setDate(Calendar.getInstance().getTime());
                 data.setCurrentTime(System.currentTimeMillis());
+                data.setWhereIsDevice("wrist");
+                data.setActivity("walking");
+                data.setId(patientId);
             }
-
+            double seconds = data.getCurrentTime()/1000.00;
             CloudEntity ce = new CloudEntity("PatientData");
             ce.put("date", data.getDate());
-            ce.put("currentTimeMilles",data.getCurrentTime());
+            ce.put("seconds",seconds);
             ce.put("PatientId",data.getId());
             ce.put("XA",data.getXa());
             ce.put("ZA",data.getZa());
