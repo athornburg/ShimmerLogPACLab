@@ -77,13 +77,13 @@ public class CloudBackendAsync extends CloudBackend {
      * @param ce {@link CloudEntity} for inserting a CloudEntity.
      * @param handler {@link CloudCallbackHandler} that handles the response.
      */
-    public void insert(CloudEntity ce, CloudCallbackHandler<CloudEntity> handler) {
-        (new BackendCaller<CloudEntity, CloudEntity>(ce, handler) {
+    public BackendCaller insert(CloudEntity ce, CloudCallbackHandler<CloudEntity> handler) {
+        return new BackendCaller<CloudEntity, CloudEntity>(ce, handler) {
             @Override
             protected CloudEntity callBackend(CloudEntity param) throws IOException {
                 return CloudBackendAsync.super.insert(param);
             }
-        }).start();
+        };
     }
 
     /**
@@ -94,14 +94,14 @@ public class CloudBackendAsync extends CloudBackend {
      * @param ceList {@link java.util.List} that holds {@link CloudEntity}s to save.
      * @param handler {@link CloudCallbackHandler} that handles the response.
      */
-    public void insertAll(
+    public BackendCaller insertAll(
             List<CloudEntity> ceList, CloudCallbackHandler<List<CloudEntity>> handler) {
-        (new BackendCaller<List<CloudEntity>, List<CloudEntity>>(ceList, handler) {
+        return new BackendCaller<List<CloudEntity>, List<CloudEntity>>(ceList, handler) {
             @Override
             protected List<CloudEntity> callBackend(List<CloudEntity> ceList) throws IOException {
                 return CloudBackendAsync.super.insertAll(ceList);
             }
-        }).start();
+        };
     }
 
     /**

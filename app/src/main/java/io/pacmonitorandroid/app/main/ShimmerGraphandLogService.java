@@ -207,7 +207,6 @@ public class ShimmerGraphandLogService extends ServiceActivity {
                      aq.ajax(url, File.class, new AjaxCallback<File>(){
 
                          public void callback(String url, File file, AjaxStatus status) {
-                             file = log.getFile();
                              if(file != null){
                                  Toast.makeText(getApplicationContext(),"File:" + file.length() + ":" + file,Toast.LENGTH_LONG).show();
                              }else{

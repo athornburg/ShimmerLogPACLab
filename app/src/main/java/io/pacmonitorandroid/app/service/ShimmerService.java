@@ -756,7 +756,6 @@ public class ShimmerService extends Service {
 	
 	public void closeAndRemoveFile(String bluetoothAddress){
 		if (mEnableLogging==true && mLogShimmer.get(bluetoothAddress)!=null){
-			mLogShimmer.get(bluetoothAddress).closeFile();
 			mLogShimmer.remove(bluetoothAddress);
 		}
 	}
