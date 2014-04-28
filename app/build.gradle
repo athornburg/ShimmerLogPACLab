@@ -7,6 +7,10 @@ android {
     defaultConfig {
         minSdkVersion 11
         targetSdkVersion 18
+
+        lintOptions {
+            abortOnError false
+        }
     }
 
     defaultConfig {
