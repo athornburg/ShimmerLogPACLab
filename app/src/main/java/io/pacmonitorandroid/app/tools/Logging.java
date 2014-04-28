@@ -29,6 +29,7 @@ public class Logging {
     String[] mSensorNames;
     String[] mSensorFormats;
     String patientId = UUID.randomUUID().toString();
+    List<CloudEntity>buffer;
     String[] mSensorUnits;
     String mDelimiter=","; //default is comma
     Context context;
@@ -44,6 +45,7 @@ public class Logging {
         mCredential = GoogleAccountCredential.usingAudience(context, Consts.AUTH_AUDIENCE);
         cloudBackend.setCredential(mCredential);
         this.context = context;
+        buffer = new ArrayList<CloudEntity>();
     }
 
     public Logging(String myName,String delimiter,Context context){
@@ -51,6 +53,7 @@ public class Logging {
         mCredential = GoogleAccountCredential.usingAudience(context, Consts.AUTH_AUDIENCE);
         cloudBackend.setCredential(mCredential);
         this.context = context;
+        buffer = new ArrayList<CloudEntity>();
     }
 
 
@@ -91,13 +94,13 @@ public class Logging {
 
             }
 
-            List<CloudEntity>buffer = new ArrayList<CloudEntity>();
+
             SensorData data = new SensorData();
             for (int r=0;r<mSensorNames.length;r++) {
                 Collection<FormatCluster> dataFormats = objectClusterLog.mPropertyCluster.get(mSensorNames[r]);
                 FormatCluster formatCluster = (FormatCluster) returnFormatCluster(dataFormats,mSensorFormats[r],mSensorUnits[r]);  // retrieve the calibrated data
                 Log.d("Shimmer","Data : " +mSensorNames[r] + formatCluster.mData + " "+ formatCluster.mUnits);
-                switch(formatCluster.mData){
+                switch(r){
                     case 6:data.setXa(formatCluster.mData);
                     case 11:data.setZa(formatCluster.mData);
                     case 12:data.setYa(formatCluster.mData);
@@ -113,44 +116,44 @@ public class Logging {
                 data.setWhereIsDevice("wrist");
                 data.setActivity("walking");
                 data.setId(patientId);
-                double seconds = data.getCurrentTime()/1000.00;
-                CloudEntity ce = new CloudEntity("PatientData");
-                ce.put("date", data.getDate());
-                ce.put("seconds",seconds);
-                ce.put("PatientId",data.getId());
-                ce.put("XA",data.getXa());
-                ce.put("ZA",data.getZa());
-                ce.put("YA",data.getYa());
-                ce.put("ZM",data.getZm());
-                ce.put("XM",data.getXm());
-                ce.put("YM",data.getYm());
-                ce.put("YG",data.getYg());
-                ce.put("ZG",data.getZg());
-                ce.put("XG",data.getXg());
-                ce.put("Activity",data.getActivity());
-                ce.put("WhereIsDevice",data.getWhereIsDevice());
-                buffer.add(ce);
 
-                if(buffer.size()>5){
-                    CloudCallbackHandler<List<CloudEntity>> handler = new CloudCallbackHandler<List<CloudEntity>>() {
-                        @Override
-                        public void onComplete(final List<CloudEntity> result) {
-                            Log.e("Result",result.toString());
-                        }
+        }
+        double seconds = data.getCurrentTime()/1000.00;
+        CloudEntity ce = new CloudEntity("PatientData");
+        ce.put("date", data.getDate());
+        ce.put("seconds",seconds);
+        ce.put("PatientId",data.getId());
+        ce.put("XA",data.getXa());
+        ce.put("ZA",data.getZa());
+        ce.put("YA",data.getYa());
+        ce.put("ZM",data.getZm());
+        ce.put("XM",data.getXm());
+        ce.put("YM",data.getYm());
+        ce.put("YG",data.getYg());
+        ce.put("ZG",data.getZg());
+        ce.put("XG",data.getXg());
+        ce.put("Activity",data.getActivity());
+        ce.put("WhereIsDevice",data.getWhereIsDevice());
+        buffer.add(ce);
 
-                        @Override
-                        public void onError(final IOException exception) {
-                            Log.e("Error",exception.toString());
-                        }
-                    };
-                    ExecutorService executor = Executors.newFixedThreadPool(5);
-                    executor.execute(cloudBackend.insertAll(buffer, handler));
-                    executor.shutdown();
-                    while (!executor.isTerminated()) {
-                    }
-                    buffer.clear();
-
+        if(buffer.size()>20){
+            CloudCallbackHandler<List<CloudEntity>> handler = new CloudCallbackHandler<List<CloudEntity>>() {
+                @Override
+                public void onComplete(final List<CloudEntity> result) {
+                    Log.e("Result",result.toString());
                 }
+
+                @Override
+                public void onError(final IOException exception) {
+                    Log.e("Error",exception.toString());
+                }
+            };
+            ExecutorService executor = Executors.newFixedThreadPool(5);
+            executor.execute(cloudBackend.insertAll(buffer, handler));
+            executor.shutdown();
+            while (!executor.isTerminated()) {
+            }
+            buffer.clear();
 
         }
     }
