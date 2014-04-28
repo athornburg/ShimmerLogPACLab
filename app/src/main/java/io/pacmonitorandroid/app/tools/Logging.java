@@ -94,49 +94,41 @@ public class Logging {
 
             }
 
-
-            SensorData data = new SensorData();
+        CloudEntity ce = new CloudEntity("PatientData");
+        double seconds = System.currentTimeMillis()/1000.00;
+        ce.put("date", Calendar.getInstance().getTime());
+        ce.put("seconds",seconds);
+        ce.put("PatientId",patientId);
+        ce.put("Activity","Walking");
+        ce.put("WhereIsDevice","Wrist");
             for (int r=0;r<mSensorNames.length;r++) {
                 Collection<FormatCluster> dataFormats = objectClusterLog.mPropertyCluster.get(mSensorNames[r]);
                 FormatCluster formatCluster = (FormatCluster) returnFormatCluster(dataFormats,mSensorFormats[r],mSensorUnits[r]);  // retrieve the calibrated data
                 Log.d("Shimmer","Data : " +mSensorNames[r] + formatCluster.mData + " "+ formatCluster.mUnits);
-                switch(r){
-                    case 6:data.setXa(formatCluster.mData);
-                    case 11:data.setZa(formatCluster.mData);
-                    case 12:data.setYa(formatCluster.mData);
-                    case 16:data.setZm(formatCluster.mData);
-                    case 19:data.setXm(formatCluster.mData);
-                    case 20:data.setYm(formatCluster.mData);
-                    case 27:data.setYg(formatCluster.mData);
-                    case 29:data.setZg(formatCluster.mData);
-                    case 34:data.setXg(formatCluster.mData);
+                if(mSensorNames[r].equals("Gyroscope Y")&&!formatCluster.mUnits.equals("no units")){
+                    ce.put("YG",formatCluster.mData);
+                }if(mSensorNames[r].equals("Gyroscope X")&&!formatCluster.mUnits.equals("no units")){
+                    ce.put("XG",formatCluster.mData);
+                }if(mSensorNames[r].equals("Gyroscope Z")&&!formatCluster.mUnits.equals("no units")){
+                    ce.put("ZG",formatCluster.mData);
+                }if(mSensorNames[r].equals("Magnetometer X")&&!formatCluster.mUnits.equals("no units")){
+                    ce.put("XM",formatCluster.mData);
+                }if(mSensorNames[r].equals("Magnetometer Y")&&!formatCluster.mUnits.equals("no units")){
+                    ce.put("YM",formatCluster.mData);
+                }if(mSensorNames[r].equals("Magnetometer Z")&&!formatCluster.mUnits.equals("no units")){
+                    ce.put("ZM",formatCluster.mData);
+                }if(mSensorNames[r].equals("Low Noise Accelerometer X")&&!formatCluster.mUnits.equals("no units")){
+                    ce.put("XA",formatCluster.mData);
+                }if(mSensorNames[r].equals("Low Noise Accelerometer Y")&&!formatCluster.mUnits.equals("no units")){
+                    ce.put("YA",formatCluster.mData);
+                }if(mSensorNames[r].equals("Low Noise Accelerometer Y")&&!formatCluster.mUnits.equals("no units")){
+                    ce.put("ZA",formatCluster.mData);
                 }
-                data.setDate(Calendar.getInstance().getTime());
-                data.setCurrentTime(System.currentTimeMillis());
-                data.setWhereIsDevice("wrist");
-                data.setActivity("walking");
-                data.setId(patientId);
 
         }
-        double seconds = data.getCurrentTime()/1000.00;
-        CloudEntity ce = new CloudEntity("PatientData");
-        ce.put("date", data.getDate());
-        ce.put("seconds",seconds);
-        ce.put("PatientId",data.getId());
-        ce.put("XA",data.getXa());
-        ce.put("ZA",data.getZa());
-        ce.put("YA",data.getYa());
-        ce.put("ZM",data.getZm());
-        ce.put("XM",data.getXm());
-        ce.put("YM",data.getYm());
-        ce.put("YG",data.getYg());
-        ce.put("ZG",data.getZg());
-        ce.put("XG",data.getXg());
-        ce.put("Activity",data.getActivity());
-        ce.put("WhereIsDevice",data.getWhereIsDevice());
         buffer.add(ce);
 
-        if(buffer.size()>20){
+        if(buffer.size()>50){
             CloudCallbackHandler<List<CloudEntity>> handler = new CloudCallbackHandler<List<CloudEntity>>() {
                 @Override
                 public void onComplete(final List<CloudEntity> result) {
