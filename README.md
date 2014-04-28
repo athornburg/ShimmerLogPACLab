@@ -7,11 +7,11 @@ An App for Monitoring Parkinson's Related Tremors
 Building
 --------
 This is an android studio project
-A file called local.properties must be added to the root directory
-with a path to the android sdk like this:
 
 Make sure to install [adb](http://developer.android.com/tools/help/adb.html)
 
+A file called local.properties must be added to the root directory
+with a path to the android sdk like this:
 ```
 sdk.dir=/Users/alexthornburg/adt/sdk
 ```
