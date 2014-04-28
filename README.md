@@ -10,9 +10,9 @@ This is an android studio project
 A file called local.properties must be added to the root directory
 with a path to the android sdk like this:
 
-'''
+```
 sdk.dir=/Users/alexthornburg/adt/sdk
-'''
+```
 
 This logs data to a google cloud datastore instance and the json endpoints can be found here:
 
