@@ -128,7 +128,7 @@ public class Logging {
         }
         buffer.add(ce);
 
-        if(buffer.size()>50){
+        if(buffer.size()>10){
             CloudCallbackHandler<List<CloudEntity>> handler = new CloudCallbackHandler<List<CloudEntity>>() {
                 @Override
                 public void onComplete(final List<CloudEntity> result) {
